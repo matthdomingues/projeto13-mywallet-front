@@ -47,12 +47,16 @@ export default function SignUp() {
                 <input type="password" onChange={(e) => setConfirmaSenha(e.target.value)} placeholder="Confirme a senha" value={confirmaSenha} required></input>
                 <button type="submit">Cadastrar</button>
             </form>
-            <Link to={"/"}>
+            <Link1 to={"/"}>
                 <h2>Já tem uma conta? Entre agora!</h2>
-            </Link>
+            </Link1>
         </Screen2>
     </>)
 }
+
+const Link1 = styled(Link)`
+    text-decoration: none ;
+`
 
 const Screen2 = styled.div`
 

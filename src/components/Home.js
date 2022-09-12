@@ -5,15 +5,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import exit from "../assets/imagens/exit.png";
+import NewTransactions from "./newTransactions";
 
 export default function Home() {
-    const navigate = useNavigate();
 
-    const [transactions, setTransactions] = useState([]);
-    const [balance, setBalance] = useState(0);
+    const navigate = useNavigate();
 
     const { user, setUser } = useContext(UserContext);
     const token = { headers: { Authorization: `Bearer ${user.token}` } };
+    const [transactions, setTransactions] = useState([]);
 
 
     useEffect(() => {
@@ -26,19 +26,23 @@ export default function Home() {
             };
         };
         userData();
-    }, []);
+    }, [user.token, navigate]);
 
-    function createBalance() {
-        let cache = 0;
-        for (let i = 0; i < transactions.length; i = i + 1) {
-            if (transactions[i].type === 'deposit') {
-                cache = cache + Number(transactions[i].value);
-            } else {
-                cache = cache - Number(transactions[i].value);
-            };
-        };
-        return setBalance(cache.toFixed(2));
+    function pegaSaldo() {
+
+        if (transactions.length > 0) {
+            return transactions.reduce((previous, current) => {
+                if (current.type === 'deposit') {
+                    return Number(previous + current.price);
+                }
+
+                return Number(previous - current.price);
+            }, 0);
+        } else {
+            return 0;
+        }
     };
+    const saldo = pegaSaldo();
 
     return (
         <>
@@ -54,33 +58,27 @@ export default function Home() {
                         </Register1>) :
                         (<Register2>
                             <div className="transactions">
-                                {transactions.map((value) =>
-                                    <div className="spent">
-                                        <h1>{value.date}</h1>
-                                        <h2>{value.description}</h2>
-                                        <h3>{value.value}</h3>
-                                    </div>
-                                )}
+                                {transactions.map((m) => <NewTransactions date={m.date} description={m.description} type={m.type} price={m.price} />)}
                             </div>
                             <div className="saldo">
                                 <h4>Saldo</h4>
-                                <h5>{balance}</h5>
+                                <h5>{saldo}</h5>
                             </div>
-                        </Register2>)};
+                        </Register2>)}
                 </>
                 <Button>
-                    <Link to={"/deposit"}>
+                    <Link1 to={"/deposit"}>
                         <Button1>
                             <ion-icon name="add-circle-outline" color="light"></ion-icon>
                             <h1>Nova entrada</h1>
                         </Button1>
-                    </Link>
-                    <Link to={"/withdraw"}>
+                    </Link1>
+                    <Link2 to={"/withdraw"}>
                         <Button2>
                             <ion-icon name="add-circle-outline" color="light"></ion-icon>
                             <h1>Nova saída</h1>
                         </Button2>
-                    </Link>
+                    </Link2>
                 </Button>
             </Screen1>
         </>
@@ -166,40 +164,7 @@ const Register2 = styled.div`
         flex-direction: column;
         overflow-x: auto;  
         
-        .spent{           
-        display: flex;        
-        align-items: left;
-
-            h1 {
-            font-family: 'Raleway', sans-serif;
-            color: #C6C6C6;        
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 19px;
-            margin-right: 5px;
-            box-sizing: border-box;
-            };
-
-            h2 {
-            width: 190px;
-            font-family: 'Raleway', sans-serif;
-            color: #000000;        
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 19px;
-            overflow-y: auto;            
-            margin-right: 10px;
-            box-sizing: border-box;
-            };
-
-            h3 {
-            font-family: 'Raleway', sans-serif;
-            color: blue;        
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 19px;            
-            };
-        };       
+           
     };   
 
     .saldo {
@@ -296,4 +261,11 @@ const Button2 = styled.div`
         text-align: left;
         color: white;
     }
-` 
+`
+const Link1 = styled(Link)`
+    text-decoration: none ;
+`
+
+const Link2 = styled(Link)`
+    text-decoration: none ;
+`

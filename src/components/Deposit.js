@@ -42,7 +42,7 @@ export default function Deposit() {
             <form onSubmit={enviar}>
                 <Input1 type="number" onChange={(e) => setPrice(e.target.value)} placeholder="Valor" value={price} required></Input1>
                 <Input2 type="text" onChange={(e) => setDescription(e.target.value)} placeholder="Descrição" value={description} required></Input2>
-                <Button1 type="submit">"Salvar entrada"</Button1>
+                <Button1 type="submit">Salvar entrada</Button1>
             </form>
         </Screen1>
     );

@@ -40,7 +40,7 @@ export default function Withdraw() {
                 <h1>Nova saída</h1>
             </Logo>
             <form onSubmit={enviar}>
-                <Input1 type="text" onChange={(e) => setPrice(e.target.value)} placeholder="Valor" value={price} required></Input1>
+                <Input1 type="number" onChange={(e) => setPrice(e.target.value)} placeholder="Valor" value={price} required></Input1>
                 <Input2 type="text" onChange={(e) => setDescription(e.target.value)} placeholder="Descrição" value={description} required></Input2>
                 <Button1 type="submit">Salvar saída</Button1>
             </form>

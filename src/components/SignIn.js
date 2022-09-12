@@ -17,13 +17,12 @@ export default function SignIn() {
 
         let requestLogin = ({
             email: `${email}`,
-            password: `${senha}`
+            senha: `${senha}`
         });
 
         try {
             const response = await axios.post("http://localhost:5000/sign-in", requestLogin);
-            const { nome, token } = response.data;
-            setUser({ nome, token });
+            setUser(response.data);
             navigate("/home");
         } catch (error) {
             alert('Falha no Login!');
@@ -42,13 +41,17 @@ export default function SignIn() {
                     <Input2 type="password" onChange={(e) => setSenha(e.target.value)} placeholder="Senha" value={senha} required></Input2>
                     <Button1 type="submit">Entrar</Button1>
                 </form>
-                <Link to={"/sign-up"}>
+                <Link1 to={"/sign-up"}>
                     <h2>Primeira vez? Cadastre-se!</h2>
-                </Link>
+                </Link1>
             </Screen1>
         </>
     );
 };
+
+const Link1 = styled(Link)`
+    text-decoration: none ;
+`
 
 const Screen1 = styled.div`
     
